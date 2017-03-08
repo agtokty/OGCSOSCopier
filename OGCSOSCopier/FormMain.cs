@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OGCSOSCopier.RequestHandlers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -45,9 +46,11 @@ namespace OGCSOSCopier
 			{
 				MessageBox.Show("DESTINATION URL IS NOT VALID");return;
 			}
-				
 
-			MessageBox.Show("OK");
+            GetCapabilitiesRequestHandler gcrh = new GetCapabilitiesRequestHandler(source_url, comboBox_source_version.SelectedItem.ToString());
+            gcrh.Run();
+
+            MessageBox.Show("OK");
 		}
 	}
 

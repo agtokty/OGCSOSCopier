@@ -41,9 +41,10 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.settings_observations = new System.Windows.Forms.CheckBox();
             this.button_start = new System.Windows.Forms.Button();
+            this.settings_procedure = new System.Windows.Forms.CheckBox();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -171,35 +172,25 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label7.Location = new System.Drawing.Point(12, 225);
+            this.label7.Location = new System.Drawing.Point(12, 214);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(77, 17);
             this.label7.TabIndex = 6;
             this.label7.Text = "SETTINGS";
             // 
-            // checkBox1
+            // settings_observations
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(15, 258);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(104, 17);
-            this.checkBox1.TabIndex = 7;
-            this.checkBox1.Text = "Only Procedures";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(125, 258);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(88, 17);
-            this.checkBox2.TabIndex = 8;
-            this.checkBox2.Text = "Observations";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.settings_observations.AutoSize = true;
+            this.settings_observations.Location = new System.Drawing.Point(101, 244);
+            this.settings_observations.Name = "settings_observations";
+            this.settings_observations.Size = new System.Drawing.Size(88, 17);
+            this.settings_observations.TabIndex = 8;
+            this.settings_observations.Text = "Observations";
+            this.settings_observations.UseVisualStyleBackColor = true;
             // 
             // button_start
             // 
-            this.button_start.Location = new System.Drawing.Point(704, 280);
+            this.button_start.Location = new System.Drawing.Point(704, 240);
             this.button_start.Name = "button_start";
             this.button_start.Size = new System.Drawing.Size(75, 23);
             this.button_start.TabIndex = 9;
@@ -207,15 +198,37 @@
             this.button_start.UseVisualStyleBackColor = true;
             this.button_start.Click += new System.EventHandler(this.button_start_Click);
             // 
+            // settings_procedure
+            // 
+            this.settings_procedure.AutoSize = true;
+            this.settings_procedure.Checked = true;
+            this.settings_procedure.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.settings_procedure.Location = new System.Drawing.Point(15, 244);
+            this.settings_procedure.Name = "settings_procedure";
+            this.settings_procedure.Size = new System.Drawing.Size(80, 17);
+            this.settings_procedure.TabIndex = 7;
+            this.settings_procedure.Text = "Procedures";
+            this.settings_procedure.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Enabled = false;
+            this.richTextBox1.Location = new System.Drawing.Point(11, 281);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(768, 254);
+            this.richTextBox1.TabIndex = 10;
+            this.richTextBox1.Text = "";
+            // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(791, 326);
+            this.ClientSize = new System.Drawing.Size(791, 547);
+            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.button_start);
-            this.Controls.Add(this.checkBox2);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.settings_observations);
+            this.Controls.Add(this.settings_procedure);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -248,9 +261,10 @@
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.CheckBox checkBox1;
-		private System.Windows.Forms.CheckBox checkBox2;
+		private System.Windows.Forms.CheckBox settings_observations;
 		private System.Windows.Forms.Button button_start;
-	}
+        private System.Windows.Forms.CheckBox settings_procedure;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+    }
 }
 

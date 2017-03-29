@@ -33,8 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Netcad.SWE.Interop">
-      <HintPath>..\..\Netcad.SWE.Interop.dll</HintPath>
+      <HintPath>..\..\..\..\..\AGIT_NETCAD_SVN\NETCAD_REPO\REPO3_SOS\Netcad.SWE.Interop\bin\Release\Netcad.SWE.Interop.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
@@ -60,10 +64,15 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Settings.cs" />
+    <Compile Include="OGCSOSCopierConfig.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestHandlers\DescribeSensorRequestHandler.cs" />
     <Compile Include="RequestHandlers\GetCapabilitiesRequestHandler.cs" />
     <Compile Include="Util\Common.cs" />
+    <Compile Include="Util\DebugHandler.cs" />
+    <Compile Include="Util\Loggers.cs" />
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>

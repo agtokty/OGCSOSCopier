@@ -1,4 +1,5 @@
-﻿using Netcad.SWE.Interop.OpenGIS.Sos_20;
+﻿using Netcad.SWE.Interop.OpenGIS.Ows_11;
+using Netcad.SWE.Interop.OpenGIS.Sos_20;
 using Netcad.SWE.Interop.OpenGIS.Swes_20;
 using OGCSOSCopier.Models;
 using RestSharp;
@@ -17,15 +18,13 @@ namespace OGCSOSCopier.RequestHandlers
     public class GetCapabilitiesRequestHandler
     {
 
-        private static string _sosUrl;
-        private static string _version;
+        //private static string _sosUrl;
+        //private static string _version;
         private static CapabilitiesType _capabilitiesResponse = null;
 
-        public GetCapabilitiesRequestHandler(string url, string version)
+        public GetCapabilitiesRequestHandler()
         {
-            _sosUrl = url;
-            _version = version;
-
+            _capabilitiesResponse = null;
             Run();
         }
 
@@ -72,38 +71,58 @@ namespace OGCSOSCopier.RequestHandlers
 
         private static void Run()
         {
-            var client = new RestClient(_sosUrl);
+            var client = new RestClient(OGCSOSCopierConfig.SOURCE_SOS_URL);
             var request = new RestRequest(Method.GET);
 
             request.AddParameter("service", "SOS");
-            request.AddParameter("version", _version);
+            request.AddParameter("version", OGCSOSCopierConfig.SOURCE_SOS_VERSION);
             request.AddParameter("request", "GetCapabilities");
+
+
+            IRestResponse response = client.Execute(request);
+            var content = response.Content;
+
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                XmlSerializer serializer2 = new XmlSerializer(typeof(ExceptionReport));
+                ExceptionReport exceptionReport = null;
+                using (TextReader reader = new StringReader(content))
+                {
+                    exceptionReport = (ExceptionReport)serializer2.Deserialize(reader);
+                }
+
+                if (exceptionReport != null && exceptionReport.Exception != null && exceptionReport.Exception[0] != null && exceptionReport.Exception[0].ExceptionText[0] != null)
+                    throw new Exception(exceptionReport.Exception[0].ExceptionText[0]);
+                else
+                    throw new Exception();
+            }
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                throw new Exception("Source url returns " + response.StatusCode);
+
+            XmlSerializer serializer = new XmlSerializer(typeof(CapabilitiesType));
+            CapabilitiesType capabilitiesResponse = null;
 
             try
             {
-                IRestResponse response = client.Execute(request);
-                var content = response.Content;
-
-                XmlSerializer serializer = new XmlSerializer(typeof(CapabilitiesType));
-                CapabilitiesType capabilitiesResponse = null;
                 using (TextReader reader = new StringReader(content))
                 {
                     capabilitiesResponse = (CapabilitiesType)serializer.Deserialize(reader);
                 }
-
-                if (capabilitiesResponse.contents == null ||
-                    capabilitiesResponse.contents.Contents == null ||
-                    capabilitiesResponse.contents.Contents.offering == null ||
-                    capabilitiesResponse.contents.Contents.offering.Length == 0)
-                    throw new Exception("Offering not found!");
-
-                _capabilitiesResponse = capabilitiesResponse;
-
             }
             catch (Exception exp)
             {
-                Debug.WriteLine(exp);
             }
+
+            if (capabilitiesResponse.contents == null ||
+                capabilitiesResponse.contents.Contents == null ||
+                capabilitiesResponse.contents.Contents.offering == null ||
+                capabilitiesResponse.contents.Contents.offering.Length == 0)
+                throw new Exception("Offering not found!");
+
+            _capabilitiesResponse = capabilitiesResponse;
+
+
         }
 
 

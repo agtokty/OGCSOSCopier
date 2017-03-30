@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Main));
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -90,6 +91,7 @@
             this.comboBox_source_version.Name = "comboBox_source_version";
             this.comboBox_source_version.Size = new System.Drawing.Size(121, 21);
             this.comboBox_source_version.TabIndex = 1;
+            this.comboBox_source_version.SelectedValueChanged += new System.EventHandler(this.comboBox_source_version_SelectedValueChanged);
             // 
             // textBox_source_url
             // 
@@ -98,6 +100,7 @@
             this.textBox_source_url.Size = new System.Drawing.Size(479, 20);
             this.textBox_source_url.TabIndex = 0;
             this.textBox_source_url.Text = "http://netigma.netcad.com.tr/SOS/Swe.svc/";
+            this.textBox_source_url.TextChanged += new System.EventHandler(this.textBox_source_url_TextChanged);
             // 
             // panel2
             // 
@@ -147,6 +150,7 @@
             this.textBox_dest_url.Size = new System.Drawing.Size(479, 20);
             this.textBox_dest_url.TabIndex = 0;
             this.textBox_dest_url.Text = "http://netigma.netcad.com.tr/SOS_DEV/Swe.svc/";
+            this.textBox_dest_url.TextChanged += new System.EventHandler(this.textBox_dest_url_TextChanged);
             // 
             // label5
             // 
@@ -239,6 +243,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form_Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "OGC SOS Copier";

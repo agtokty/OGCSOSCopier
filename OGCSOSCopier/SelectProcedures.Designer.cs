@@ -32,10 +32,10 @@
             this.button_OK = new System.Windows.Forms.Button();
             this.button_CANCEL = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.button_selectNone = new System.Windows.Forms.Button();
+            this.button_selectAll = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button_selectAll = new System.Windows.Forms.Button();
-            this.button_selectNone = new System.Windows.Forms.Button();
             this.select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -87,6 +87,26 @@
             this.panel2.Size = new System.Drawing.Size(314, 31);
             this.panel2.TabIndex = 2;
             // 
+            // button_selectNone
+            // 
+            this.button_selectNone.Location = new System.Drawing.Point(84, 5);
+            this.button_selectNone.Name = "button_selectNone";
+            this.button_selectNone.Size = new System.Drawing.Size(75, 23);
+            this.button_selectNone.TabIndex = 1;
+            this.button_selectNone.Text = "None";
+            this.button_selectNone.UseVisualStyleBackColor = true;
+            this.button_selectNone.Click += new System.EventHandler(this.button_selectNone_Click);
+            // 
+            // button_selectAll
+            // 
+            this.button_selectAll.Location = new System.Drawing.Point(3, 5);
+            this.button_selectAll.Name = "button_selectAll";
+            this.button_selectAll.Size = new System.Drawing.Size(75, 23);
+            this.button_selectAll.TabIndex = 0;
+            this.button_selectAll.Text = "All";
+            this.button_selectAll.UseVisualStyleBackColor = true;
+            this.button_selectAll.Click += new System.EventHandler(this.button_selectAll_Click);
+            // 
             // panel3
             // 
             this.panel3.Controls.Add(this.dataGridView1);
@@ -107,31 +127,12 @@
             this.dataGridView1.Size = new System.Drawing.Size(314, 529);
             this.dataGridView1.TabIndex = 1;
             // 
-            // button_selectAll
-            // 
-            this.button_selectAll.Location = new System.Drawing.Point(3, 5);
-            this.button_selectAll.Name = "button_selectAll";
-            this.button_selectAll.Size = new System.Drawing.Size(75, 23);
-            this.button_selectAll.TabIndex = 0;
-            this.button_selectAll.Text = "All";
-            this.button_selectAll.UseVisualStyleBackColor = true;
-            this.button_selectAll.Click += new System.EventHandler(this.button_selectAll_Click);
-            // 
-            // button_selectNone
-            // 
-            this.button_selectNone.Location = new System.Drawing.Point(84, 5);
-            this.button_selectNone.Name = "button_selectNone";
-            this.button_selectNone.Size = new System.Drawing.Size(75, 23);
-            this.button_selectNone.TabIndex = 1;
-            this.button_selectNone.Text = "None";
-            this.button_selectNone.UseVisualStyleBackColor = true;
-            this.button_selectNone.Click += new System.EventHandler(this.button_selectNone_Click);
-            // 
             // select
             // 
             this.select.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.select.HeaderText = "Select";
             this.select.Name = "select";
+            this.select.ReadOnly = true;
             this.select.Width = 43;
             // 
             // SelectProcedures

@@ -13,13 +13,14 @@ namespace OGCSOSCopier
     public partial class SelectProcedures : Form
     {
 
-        private static List<string> seledtedProcedures = new List<string>();
+        private static List<string> seledtedProcedures;
 
         public SelectProcedures(List<string> procedureList)
         {
             InitializeComponent();
+            seledtedProcedures = new List<string>();
 
-            DataTable dt = new DataTable("MyDataTable");
+            DataTable dt = new DataTable("Procedures");
             DataColumn dcSomeText = new DataColumn("procedure");
 
             dt.Columns.Add(dcSomeText);
@@ -33,9 +34,8 @@ namespace OGCSOSCopier
 
             dataGridView1.DataSource = dt;
 
-
             dataGridView1.Columns["procedure"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
+            dataGridView1.Columns["procedure"].ReadOnly = true;
             dataGridView1.CellClick += DataGridView1_CellClick;
         }
 
@@ -72,8 +72,7 @@ namespace OGCSOSCopier
 
         private void button_OK_Click(object sender, EventArgs e)
         {
-            //List<string> seledtedProcedures = new List<string>();
-
+            seledtedProcedures = new List<string>();
             foreach (DataGridViewRow item in dataGridView1.Rows)
             {
                 if (item.Cells[0] != null && item.Cells[0].Value != null && (bool)item.Cells[0].Value == true)

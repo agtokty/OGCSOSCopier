@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -93,6 +94,54 @@ namespace OGCSOSCopier.Util
             var serializer = new XmlSerializer(typeof(T));
 
             return (T)serializer.Deserialize(new XmlNodeReader(element));
+        }
+
+
+        /// <summary>
+        /// http://stackoverflow.com/questions/1123718/format-xml-string-to-print-friendly-xml-string
+        /// </summary>
+        /// <param name="XML"></param>
+        /// <returns></returns>
+        public static string PrintXML(string XML)
+        {
+            string Result = "";
+
+            MemoryStream mStream = new MemoryStream();
+            XmlTextWriter writer = new XmlTextWriter(mStream, Encoding.Unicode);
+            XmlDocument document = new XmlDocument();
+
+            try
+            {
+                // Load the XmlDocument with the XML.
+                document.LoadXml(XML);
+
+                writer.Formatting = Formatting.Indented;
+
+                // Write the XML into a formatting XmlTextWriter
+                document.WriteContentTo(writer);
+                writer.Flush();
+                mStream.Flush();
+
+                // Have to rewind the MemoryStream in order to read
+                // its contents.
+                mStream.Position = 0;
+
+                // Read MemoryStream contents into a StreamReader.
+                StreamReader sReader = new StreamReader(mStream);
+
+                // Extract the text from the StreamReader.
+                string FormattedXML = sReader.ReadToEnd();
+
+                Result = FormattedXML;
+            }
+            catch (XmlException)
+            {
+            }
+
+            mStream.Close();
+            writer.Close();
+
+            return Result;
         }
 
     }

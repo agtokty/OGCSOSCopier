@@ -89,13 +89,13 @@ namespace OGCSOSCopier.RequestHandlers
 
                 var client = new RestClient(OGCSOSCopierConfig.DEST_SOS_URL);
                 var request = new RestRequest(Method.POST);
-                //request.AddHeader("Content-Type", "application/xml");
                 request.AddHeader("Authorization", "asdasdasdl");
                 request.AddParameter("application/xml", reqcontent, ParameterType.RequestBody);
-                //request.AddBody(reqcontent);
 
                 IRestResponse response = client.Execute(request);
                 var content = response.Content;
+
+                Util.Loggers.InsertSensorRequestsLogger.Debug(reqcontent + "\n RESPONSE : \n" + Util.ObjectSerializer.PrintXML(content));
 
                 InsertSensorResponseType insertSensorResponse = new InsertSensorResponseType();
 

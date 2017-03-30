@@ -52,7 +52,7 @@ namespace OGCSOSCopier.RequestHandlers
                 describeSensorResponse = (DescribeSensorResponseType)serializer.Deserialize(reader);
             }
 
-
+            Util.Loggers.DescribeSensorRequestsLogger.Debug(Util.SerializerExtension.SerializeObjectToXmlString(describeSensorResponse));
 
             return describeSensorResponse;
 

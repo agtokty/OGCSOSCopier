@@ -19,11 +19,14 @@ namespace OGCSOSCopier.Util
         /// <param name="toSerialize"></param>
         /// <param name="ns"></param>
         /// <returns></returns>
-        public static string SerializeObjectToXmlString<T>(this T toSerialize, XmlSerializerNamespaces ns)
+        public static string SerializeObjectToXmlString<T>(this T toSerialize, XmlSerializerNamespaces ns = null)
         {
             var stringwriter = new Utf8StringWriter();
             var serializer = new XmlSerializer(toSerialize.GetType());
-            serializer.Serialize(stringwriter, toSerialize, ns);
+            if (ns != null)
+                serializer.Serialize(stringwriter, toSerialize, ns);
+            else
+                serializer.Serialize(stringwriter, toSerialize);
             //serializer.Serialize(stringwriter, toSerialize );
             return stringwriter.ToString();
         }

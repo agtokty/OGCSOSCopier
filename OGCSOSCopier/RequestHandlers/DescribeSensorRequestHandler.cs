@@ -52,6 +52,8 @@ namespace OGCSOSCopier.RequestHandlers
                 describeSensorResponse = (DescribeSensorResponseType)serializer.Deserialize(reader);
             }
 
+
+
             return describeSensorResponse;
 
         }

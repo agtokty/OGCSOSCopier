@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using log4net.Core;
 using log4net.Config;
+using Netcad.SWE.Interop.OpenGIS.Swes_20;
 
 namespace OGCSOSCopier
 {
@@ -28,9 +29,18 @@ namespace OGCSOSCopier
             comboBox_dest_version.SelectedIndex = 1;
             comboBox_source_version.SelectedIndex = 1;
 
+            richTextBox1.TabStop = false;
+            richTextBox1.ReadOnly = true;
+            richTextBox1.BackColor = Color.DimGray;
+            richTextBox1.Cursor = Cursors.Arrow;
+            richTextBox1.Enter += RichTextBox1_Enter;
+
+    }
+
+        private void RichTextBox1_Enter(object sender, EventArgs e)
+        {
+            label5.Focus();
         }
-
-
 
         public void DoAppend(LoggingEvent loggingEvent)
         {
@@ -68,29 +78,59 @@ namespace OGCSOSCopier
             OGCSOSCopierConfig.DEST_SOS_URL = dest_url;
             OGCSOSCopierConfig.DEST_SOS_VERSION = comboBox_dest_version.SelectedItem.ToString();
 
+            WriteLog("GetCapabilities Request....");
             GetCapabilitiesRequestHandler gcrh = new GetCapabilitiesRequestHandler(source_url, comboBox_source_version.SelectedItem.ToString());
-            var capabilitiesResponse = gcrh.Run(settings);
+            var allOfferings = gcrh.GetOfferings();
+            WriteLog("GetCapabilities Request is succesfull");
 
-
-            if (capabilitiesResponse == null)
-                return;
-
-            if (capabilitiesResponse.contents == null ||
-                capabilitiesResponse.contents.Contents == null ||
-                capabilitiesResponse.contents.Contents.offering == null ||
-                capabilitiesResponse.contents.Contents.offering.Length == 0)
-                throw new Exception("Offering not found!");
-
-            foreach (var item in capabilitiesResponse.contents.Contents.offering)
+            List<string> procedureList = new List<string>();
+            foreach (var item in allOfferings)
             {
                 if (item == null && item.AbstractOffering == null)
                     continue;
+                procedureList.Add(item.AbstractOffering.procedure);
+            }
 
-                DescribeSensorRequestHandler ds = new DescribeSensorRequestHandler(item.AbstractOffering.procedure);
+            WriteLog("Select procedures");
+            SelectProcedures sp = new SelectProcedures(procedureList);
+            var dialogResult = sp.ShowDialog();
+
+            if (sp.SeledtedProcedures != null && sp.SeledtedProcedures.Count == 0)
+            {
+                WriteLog("Select at least one procedure!");
+                return;
+            }
+  
+
+            List<DescribeSensorResponseType> describeSensorResponseList = new List<DescribeSensorResponseType>();
+            WriteLog("Starting DescribeSensor operations");
+            foreach (var item in sp.SeledtedProcedures)
+            {
+                DescribeSensorRequestHandler ds = new DescribeSensorRequestHandler(item);
                 var describeSensorResponse = ds.Run();
+                if (describeSensorResponse != null)
+                {
+                    describeSensorResponseList.Add(describeSensorResponse);
+                    WriteLog("DescribeSensor OK : " + item);
+                }
+                else
+                    WriteLog("DescribeSensor NOT OK : " + item);
             }
 
 
+
+
+
+        }
+
+        private void WriteLog(string message)
+        {
+            richTextBox1.AppendText(DateTime.Now.ToShortTimeString() + " >> " + message + "\n");
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            richTextBox1.ScrollToCaret();
         }
     }
 

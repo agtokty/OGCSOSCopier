@@ -1,11 +1,7 @@
 ﻿using Netcad.SWE.Interop.OpenGIS.Swes_20;
 using RestSharp;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace OGCSOSCopier.RequestHandlers
@@ -35,28 +31,39 @@ namespace OGCSOSCopier.RequestHandlers
             var client = new RestClient(OGCSOSCopierConfig.SOURCE_SOS_URL);
             var request = new RestRequest(Method.GET);
 
+            request.Parameters.Clear();
             request.AddParameter("service", "SOS");
             request.AddParameter("version", OGCSOSCopierConfig.SOURCE_SOS_VERSION);
             request.AddParameter("request", "DescribeSensor");
             request.AddParameter("procedure", Procedure);
             request.AddParameter("procedureDescriptionFormat", Format);
+            request.AddHeader("Accept", "application/xml");
 
             IRestResponse response = client.Execute(request);
             var content = response.Content;
 
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                var err = Util.Common.GetOGCExceptionText(content);
+                throw new Exception("BadRequest " + err);
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                var err = Util.Common.GetOGCExceptionText(content);
+                throw new Exception("Unauthorized " + err);
+            }
 
             XmlSerializer serializer = new XmlSerializer(typeof(DescribeSensorResponseType));
             DescribeSensorResponseType describeSensorResponse = null;
             using (TextReader reader = new StringReader(content))
-            {
                 describeSensorResponse = (DescribeSensorResponseType)serializer.Deserialize(reader);
-            }
 
             Util.Loggers.DescribeSensorRequestsLogger.Debug(Util.SerializerExtension.SerializeObjectToXmlString(describeSensorResponse));
 
-            return describeSensorResponse;
 
+            return describeSensorResponse;
         }
+
 
 
     }

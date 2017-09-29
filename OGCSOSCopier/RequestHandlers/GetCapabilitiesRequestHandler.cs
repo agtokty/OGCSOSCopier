@@ -74,10 +74,11 @@ namespace OGCSOSCopier.RequestHandlers
             var client = new RestClient(OGCSOSCopierConfig.SOURCE_SOS_URL);
             var request = new RestRequest(Method.GET);
 
+            request.Parameters.Clear();
             request.AddParameter("service", "SOS");
             request.AddParameter("version", OGCSOSCopierConfig.SOURCE_SOS_VERSION);
             request.AddParameter("request", "GetCapabilities");
-
+            request.AddHeader("Accept", "application/xml");
 
             IRestResponse response = client.Execute(request);
             var content = response.Content;

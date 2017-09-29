@@ -104,24 +104,39 @@ namespace OGCSOSCopier
                     if (!sp.SeledtedProcedures.Contains(item.AbstractOffering.procedure)) continue;
 
                     DescribeSensorRequestHandler ds = new DescribeSensorRequestHandler(item.AbstractOffering.procedure);
-                    var describeSensorResponse = ds.Run();
-                    if (describeSensorResponse != null)
+                    try
                     {
-                        describeSensorResponseAndOfferings.Add(new Tuple<DescribeSensorResponseType, AbstractContentsTypeOffering>(describeSensorResponse, item));
-                        WriteLog("DescribeSensor OK : " + item.AbstractOffering.procedure);
+                        var describeSensorResponse = ds.Run();
+                        if (describeSensorResponse != null)
+                        {
+                            describeSensorResponseAndOfferings.Add(new Tuple<DescribeSensorResponseType, AbstractContentsTypeOffering>(describeSensorResponse, item));
+                            WriteLog("DescribeSensor OK : " + item.AbstractOffering.procedure);
+                        }
+                        else
+                            WriteLog("DescribeSensor NOT OK : " + item.AbstractOffering.procedure);
                     }
-                    else
-                        WriteLog("DescribeSensor NOT OK : " + item.AbstractOffering.procedure);
+                    catch (Exception exp)
+                    {
+                        WriteLog("DescribeSensor NOT OK : " + exp.Message);
+                    }
                 }
                 WriteLogLine(); WriteLog("Starting InsertSensor operations");
                 foreach (var item in describeSensorResponseAndOfferings)
                 {
                     InsertSensorRequestHandler isrh = new InsertSensorRequestHandler(item.Item1, (ObservationOfferingType)item.Item2.AbstractOffering);
-                    Tuple<bool, string> res = isrh.Run();
-                    if (res.Item1)
-                        WriteLog("InsertSensor OK : " + res.Item2);
-                    else
-                        WriteLog("InsertSensor NOT OK : " + res.Item2);
+
+                    try
+                    {
+                        Tuple<bool, string> res = isrh.Run();
+                        if (res.Item1)
+                            WriteLog("InsertSensor OK : " + res.Item2);
+                        else
+                            WriteLog("InsertSensor NOT OK : " + res.Item2);
+                    }
+                    catch (Exception exp)
+                    {
+                        WriteLog("InsertSensor NOT OK : " + exp.Message);
+                    }
                 }
             }
 

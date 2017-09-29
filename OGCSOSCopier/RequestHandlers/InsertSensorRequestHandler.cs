@@ -95,6 +95,17 @@ namespace OGCSOSCopier.RequestHandlers
                 IRestResponse response = client.Execute(request);
                 var content = response.Content;
 
+                if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    var err = Util.Common.GetOGCExceptionText(content);
+                    throw new Exception("BadRequest " + err);
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    var err = Util.Common.GetOGCExceptionText(content);
+                    throw new Exception("Unauthorized " + err);
+                }
+
                 Util.Loggers.InsertSensorRequestsLogger.Debug(reqcontent + "\n RESPONSE : \n" + Util.ObjectSerializer.PrintXML(content));
 
                 InsertSensorResponseType insertSensorResponse = new InsertSensorResponseType();

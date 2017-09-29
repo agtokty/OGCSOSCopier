@@ -21,15 +21,25 @@ namespace OGCSOSCopier
             seledtedProcedures = new List<string>();
 
             DataTable dt = new DataTable("Procedures");
-            DataColumn dcSomeText = new DataColumn("procedure");
+            DataColumn identifierColumn = new DataColumn("procedure");
+            DataColumn formatColumn = new DataColumn("format");
 
-            dt.Columns.Add(dcSomeText);
-            DataRow dr;
+            dt.Columns.Add(identifierColumn);
+            //dt.Columns.Add(formatColumn);
+
+            DataRow row;
             foreach (var item in procedureList)
             {
-                dr = dt.NewRow();
-                dr["procedure"] = item;
-                dt.Rows.Add(dr);
+                row = dt.NewRow();
+                row["procedure"] = item;
+
+                //ComboBox cmb = new ComboBox();
+                //var list11 = new List<string>() { "10", "30", "80", "100" };
+                //cmb.DataSource = list11;
+                //row["format"] = cmb;
+                //var format = row["format"];
+
+                dt.Rows.Add(row);
             }
 
             dataGridView1.DataSource = dt;
